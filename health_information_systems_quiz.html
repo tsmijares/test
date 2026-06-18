@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIS Lesson 5 Quiz - MedTech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .option-card {
+            transition: all 0.2s ease;
+        }
+        .option-card:hover:not(.disabled) {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .correct {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+        }
+        .incorrect {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen font-sans text-slate-900">
+
+    <div id="app" class="max-w-3xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <h1 class="text-3xl font-bold text-blue-900">Lesson 5: Health Information Systems</h1>
+            <p class="text-slate-600 mt-2">2nd Year BS Medical Technology | Quiz Assessment</p>
+            <div class="mt-4 h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+                <div id="progress-bar" class="h-full bg-blue-600 transition-all duration-500" style="width: 0%"></div>
+            </div>
+        </header>
+
+        <!-- Quiz Container -->
+        <div id="quiz-container" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-10">
+            <div id="question-view">
+                <div class="flex justify-between items-center mb-6">
+                    <span id="question-number" class="text-sm font-semibold text-blue-600 uppercase tracking-wider">Question 1 of 10</span>
+                </div>
+                
+                <h2 id="question-text" class="text-xl font-medium mb-8 leading-relaxed">
+                    <!-- Question text goes here -->
+                </h2>
+
+                <div id="options-list" class="space-y-4">
+                    <!-- Options go here -->
+                </div>
+
+                <div id="feedback-area" class="mt-8 hidden p-4 rounded-lg border">
+                    <p id="feedback-text" class="text-sm"></p>
+                </div>
+
+                <div class="mt-10 flex justify-end">
+                    <button id="next-btn" class="hidden bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold transition-colors shadow-lg shadow-blue-200">
+                        Next Question
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results View -->
+            <div id="results-view" class="hidden text-center py-10">
+                <div class="mb-6">
+                    <div class="inline-flex items-center justify-center w-20 h-20 bg-blue-100 text-blue-600 rounded-full mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-bold">Quiz Complete!</h2>
+                    <p class="text-slate-600 mt-2">Great job reviewing Lesson 5 content.</p>
+                </div>
+                
+                <div class="text-5xl font-black text-blue-600 my-8">
+                    <span id="final-score">0</span> / 10
+                </div>
+
+                <button onclick="location.reload()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-3 rounded-xl font-semibold transition-colors">
+                    Retry Quiz
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quizData = {
+            questions: [
+                {
+                    question: "Which component of a Health Information System includes the legislative, regulatory, and planning frameworks required for the system to function?",
+                    options: [
+                        { text: "Indicators", isCorrect: false, rationale: "Indicators are the targets and criteria used for planning, not the underlying legal or financial framework." },
+                        { text: "HIS Resources", isCorrect: true, rationale: "This component encompasses the 'inputs' like personnel, financing, and the legal/regulatory infrastructure described by the Health Metrics Network." },
+                        { text: "Data Management", isCorrect: false, rationale: "Data management refers to the processing and analysis of data rather than the foundational resources and laws." },
+                        { text: "Information Products", isCorrect: false, rationale: "These are the outputs or the evidence produced by the system, not the initial administrative inputs." }
+                    ]
+                },
+                {
+                    question: "A Medical Technologist is reviewing a patient's record to check for known drug allergies before performing a procedure. Under which data source category does this information fall?",
+                    options: [
+                        { text: "Administrative Data", isCorrect: false, rationale: "Administrative data usually focuses on billing, charges, and the types of services or practitioners involved." },
+                        { text: "Current Medical Management", isCorrect: true, rationale: "This category specifically includes 'encounter' data such as current health problems, diagnoses, and allergies to medications." },
+                        { text: "Demographic Data", isCorrect: false, rationale: "Demographics cover identity facts like age, gender, and address rather than clinical conditions or risks." },
+                        { text: "Outcomes Data", isCorrect: false, rationale: "Outcomes data measures the aftermath or effects of care, such as patient satisfaction or complications." }
+                    ]
+                },
+                {
+                    question: "According to the Health Metrics Network (HMN) framework, which of the following is considered a 'Process' in a Health Information System?",
+                    options: [
+                        { text: "HIS Resources", isCorrect: false, rationale: "HIS resources are classified as 'Inputs' because they are the prerequisites for the system." },
+                        { text: "Dissemination and Use", isCorrect: false, rationale: "Dissemination and use are classified as 'Outputs' because they involve the final application of the information." },
+                        { text: "Data Sources", isCorrect: true, rationale: "The HMN defines Indicators, Data Sources, and Data Management as the core 'Processes' of the system." },
+                        { text: "Information Products", isCorrect: false, rationale: "Information products are the results or 'Outputs' generated after data has been processed." }
+                    ]
+                },
+                {
+                    question: "Which data source reflects an individual's own perception of their physical functioning and mental well-being compared to their peers?",
+                    options: [
+                        { text: "Health Status", isCorrect: true, rationale: "Health status (or health-related quality of life) is generally self-reported and reflects emotional, cognitive, and physical functioning." },
+                        { text: "Health Risk Information", isCorrect: false, rationale: "Health risk info focuses on lifestyle behaviors like tobacco use and family genetic history." },
+                        { text: "Patient Medical History", isCorrect: false, rationale: "History focus on past medical events like surgeries or hospital admissions rather than current self-perception." },
+                        { text: "Demographic Data", isCorrect: false, rationale: "Demographics deal with objective identity facts like birth date and marital status." }
+                    ]
+                },
+                {
+                    question: "A hospital administrator uses HIS to track which staff members have viewed a specific patient's file. This illustrates which role of a well-implemented HIS?",
+                    options: [
+                        { text: "Easy to Update", isCorrect: false, rationale: "Easy updating refers to the ability to create and review electronic records quickly, not monitoring access." },
+                        { text: "Communication", isCorrect: false, rationale: "Communication refers to sharing info between doctors, though privacy must be maintained during that process." },
+                        { text: "Files are Easier to Access", isCorrect: false, rationale: "This role focuses on the move from paper to electronic formats for faster retrieval." },
+                        { text: "More Controls", isCorrect: true, rationale: "Controls involve authorizing specific staff for specific actions and ensuring security safeguards against unauthorized access." }
+                    ]
+                },
+                {
+                    question: "Which category of data includes the charges for diagnostic tests and the specialty of the physician who ordered them?",
+                    options: [
+                        { text: "Administrative Data", isCorrect: true, rationale: "Administrative data typically includes facts about services provided, billing amounts, and practitioner details." },
+                        { text: "Outcomes Data", isCorrect: false, rationale: "Outcomes data focuses on the results of the treatment, not the billing or the type of institution." },
+                        { text: "Demographic Data", isCorrect: false, rationale: "Demographics describe the patient's identity (age, race, etc.) rather than the financial or professional details of a visit." },
+                        { text: "Health Risk Information", isCorrect: false, rationale: "Risk information concerns the patient's behavior and genetic propensity for disease." }
+                    ]
+                },
+                {
+                    question: "In the context of HIS components, what must happen for raw data to become 'Information Products'?",
+                    options: [
+                        { text: "It must be stored in a physical archive.", isCorrect: false, rationale: "HIS focuses on electronic records; physical archives are what modern HIS aims to replace." },
+                        { text: "It must be transformed into evidence for health action.", isCorrect: true, rationale: "The HMN framework states that data must be transformed into information to shape policy and decision-making." },
+                        { text: "It must be kept confidential and never shared.", isCorrect: false, rationale: "While privacy is important, the 'Output' phase actually requires dissemination to the correct decision-makers." },
+                        { text: "It must be deleted after the patient is discharged.", isCorrect: false, rationale: "Data management requires long-term storage for history and research purposes." }
+                    ]
+                },
+                {
+                    question: "Which data source would contain information about a patient's past surgical procedures and family history of alcoholism?",
+                    options: [
+                        { text: "Health Status", isCorrect: false, rationale: "Health status is about the patient's current perception of their own well-being." },
+                        { text: "Patient Medical History", isCorrect: true, rationale: "This category explicitly covers previous medical encounters, admissions, and past family events or problems." },
+                        { text: "Current Medical Management", isCorrect: false, rationale: "Management data refers to the current encounter, such as current diagnoses and laboratory tests performed now." },
+                        { text: "Health Risk Information", isCorrect: false, rationale: "Risk information focuses more on lifestyle (tobacco use, exercise) and genetic factors rather than a record of past procedures." }
+                    ]
+                },
+                {
+                    question: "A core set of ______ and related targets is the basis for a plan and strategy for a Health Information System.",
+                    options: [
+                        { text: "Data Management protocols", isCorrect: false, rationale: "Data management is the handling process, not the targets or strategy basis." },
+                        { text: "Information Products", isCorrect: false, rationale: "These are the results of the system, whereas the question asks for the 'basis for a plan.'" },
+                        { text: "Indicators", isCorrect: true, rationale: "The HMN framework defines indicators and their targets as the necessary basis for an HIS plan." },
+                        { text: "Demographic facts", isCorrect: false, rationale: "Demographics are a type of data source, but they do not serve as the strategic targets for the whole system." }
+                    ]
+                },
+                {
+                    question: "What is the primary difference between Health Informatics and Health Information Technology (HIT) according to the text?",
+                    options: [
+                        { text: "Informatics focuses on tools, while HIT focuses on systems.", isCorrect: false, rationale: "The text states the opposite: HIT focuses on tools, while informatics is the application of both technology and systems." },
+                        { text: "Informatics is only for doctors, while HIT is only for MedTechs.", isCorrect: false, rationale: "Both fields apply across all healthcare settings and professions." },
+                        { text: "HIT focuses on the tools, while informatics is the application of technology and systems in healthcare.", isCorrect: true, rationale: "The text identifies informatics as the application and HIT as the tool-focused discipline." },
+                        { text: "There is no difference; they are interchangeable terms.", isCorrect: false, rationale: "The text makes a specific distinction between the focus on tools (HIT) and the broader application (Informatics)." }
+                    ]
+                }
+            ]
+        };
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answered = false;
+
+        const questionText = document.getElementById('question-text');
+        const optionsList = document.getElementById('options-list');
+        const questionNumber = document.getElementById('question-number');
+        const progressBar = document.getElementById('progress-bar');
+        const nextBtn = document.getElementById('next-btn');
+        const feedbackArea = document.getElementById('feedback-area');
+        const feedbackText = document.getElementById('feedback-text');
+        const resultsView = document.getElementById('results-view');
+        const questionView = document.getElementById('question-view');
+        const finalScore = document.getElementById('final-score');
+
+        function loadQuestion() {
+            answered = false;
+            nextBtn.classList.add('hidden');
+            feedbackArea.classList.add('hidden');
+            
+            const currentQuestion = quizData.questions[currentQuestionIndex];
+            questionNumber.textContent = `Question ${currentQuestionIndex + 1} of ${quizData.questions.length}`;
+            questionText.textContent = currentQuestion.question;
+            progressBar.style.width = `${((currentQuestionIndex) / quizData.questions.length) * 100}%`;
+
+            optionsList.innerHTML = '';
+            currentQuestion.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-card w-full text-left p-4 rounded-xl border border-slate-200 bg-white text-slate-700 font-medium disabled:cursor-default';
+                button.textContent = option.text;
+                button.onclick = () => handleAnswer(index, button);
+                optionsList.appendChild(button);
+            });
+        }
+
+        function handleAnswer(selectedIndex, clickedButton) {
+            if (answered) return;
+            answered = true;
+
+            const currentQuestion = quizData.questions[currentQuestionIndex];
+            const option = currentQuestion.options[selectedIndex];
+            const allButtons = optionsList.querySelectorAll('button');
+
+            allButtons.forEach(btn => btn.classList.add('disabled'));
+
+            if (option.isCorrect) {
+                score++;
+                clickedButton.classList.add('correct');
+                feedbackArea.classList.add('bg-green-50', 'border-green-200', 'text-green-800');
+                feedbackArea.classList.remove('bg-red-50', 'border-red-200', 'text-red-800');
+                feedbackText.innerHTML = `<strong>Correct!</strong> ${option.rationale}`;
+            } else {
+                clickedButton.classList.add('incorrect');
+                feedbackArea.classList.add('bg-red-50', 'border-red-200', 'text-red-800');
+                feedbackArea.classList.remove('bg-green-50', 'border-green-200', 'text-green-800');
+                feedbackText.innerHTML = `<strong>Incorrect.</strong> ${option.rationale}`;
+                
+                // Highlight the correct one
+                allButtons.forEach((btn, idx) => {
+                    if (currentQuestion.options[idx].isCorrect) {
+                        btn.classList.add('correct');
+                    }
+                });
+            }
+
+            feedbackArea.classList.remove('hidden');
+            nextBtn.classList.remove('hidden');
+            
+            if (currentQuestionIndex === quizData.questions.length - 1) {
+                nextBtn.textContent = "Finish Quiz";
+            }
+        }
+
+        nextBtn.onclick = () => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        };
+
+        function showResults() {
+            progressBar.style.width = "100%";
+            questionView.classList.add('hidden');
+            resultsView.classList.remove('hidden');
+            finalScore.textContent = score;
+        }
+
+        // Initialize
+        loadQuestion();
+    </script>
+</body>
+</html>
