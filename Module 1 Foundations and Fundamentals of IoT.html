@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Module 1 - What is IoT? (Interactive)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #E6F6FB; /* Blue Background */
+        }
+        .section-card {
+            background-color: #ffffff;
+            border-radius: 0.75rem; /* rounded-lg */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
+            padding: 2rem; /* p-8 */
+            margin-bottom: 3rem; /* mb-12 */
+        }
+        .section-heading {
+            color: #004AAD; /* Dark Blue */
+            font-weight: 800; /* font-extrabold */
+            font-size: 2.25rem; /* text-4xl */
+            margin-bottom: 0.75rem; /* mb-3 */
+            text-align: center;
+        }
+        .sub-heading {
+            color: #0079C2; /* Mid Blue */
+            font-weight: 600; /* font-semibold */
+            font-size: 1.25rem; /* text-xl */
+            margin-bottom: 1.5rem; /* mb-6 */
+            text-align: center;
+        }
+        .icon-text-pair {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .icon-text-pair span {
+            font-size: 1.5rem;
+            margin-right: 0.75rem;
+            color: #0079C2;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* max-w-xl */
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px; /* h-80 */
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px; /* md:h-96 */
+            }
+        }
+        .interactive-box, .interactive-list-item { /* Unified class for clickable elements */
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        .interactive-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.15), 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+            border-color: #0079C2;
+        }
+        .interactive-list-item:hover {
+            background-color: #D5ECF4; /* Lighter blue on hover */
+        }
+        .interactive-list-item:active, .interactive-box:active {
+            transform: scale(0.99);
+        }
+
+        /* Styles for additional info panels */
+        .additional-info {
+            background-color: #F0F8FF; /* Lighter background for info */
+            border-left: 4px solid #00A9E0; /* Accent border */
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.375rem; /* rounded-md */
+            font-size: 0.9rem;
+            color: #374151;
+            line-height: 1.4;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.5s ease-out, max-height 0.5s ease-out, padding 0.5s ease-out, margin-top 0.5s ease-out;
+        }
+        .additional-info.show {
+            opacity: 1;
+            max-height: 200px; /* Max height to allow transition */
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Flow diagram specifics */
+        .flow-arrow-horizontal {
+            position: relative;
+            width: 30px;
+            height: 2px;
+            background-color: #0079C2;
+            margin: 0 0.5rem;
+        }
+        .flow-arrow-horizontal::after {
+            content: '▶';
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #0079C2;
+            font-size: 0.8rem;
+        }
+        .flow-arrow-vertical {
+            width: 2px;
+            height: 30px;
+            background-color: #0079C2;
+            margin: 0.5rem auto;
+            position: relative;
+        }
+        .flow-arrow-vertical::after {
+            content: '▼';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #0079C2;
+            font-size: 0.8rem;
+        }
+        .layer-box {
+            background-color: #E6F6FB;
+            border: 1px solid #89D5F1;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+<!-- 
+    Palette Name: Brilliant Blues 
+    Hex Codes: #004AAD, #0079C2, #00A9E0, #89D5F1, #E6F6FB 
+-->
+<!-- 
+    Narrative Plan:
+    1. Introduction: Course & Module Title, Learning Outcomes.
+    2. M1.1 What is IoT?: Define IoT, evolution timeline, Sensors & Actuators diagram, Connectivity & Data explanation, Cloud/Edge comparison.
+    3. M1.2 Why IoT Matters: Benefits list, Challenges Bar Chart, Real-world examples (cards).
+    4. M1.3 IoT Ecosystem and Architecture: Layered architecture diagram, Key Components callouts, Protocols Bar Chart.
+    5. M1.4 Introduction to IoT in Healthcare (IoMT): Definition, Early Examples, Opportunities in Dentistry & MedTech.
+-->
+<!-- 
+    Visualization Choices:
+    - M1 Learning Outcomes: List with icons (HTML/CSS). NO SVG.
+    - IoT Evolution: Simple text timeline/callouts (HTML/CSS). NO SVG.
+    - Sensors & Actuators: Conceptual input-output diagram (HTML/CSS). NO SVG, NO Mermaid JS.
+    - Cloud/Edge Computing: Two comparison boxes with icons (HTML/CSS). NO SVG.
+    - Challenges: Bar Chart (illustrative data) -> Goal: Compare Categories -> Justification: Clearly shows relative importance/difficulty. Method: Chart.js (Canvas). NO SVG.
+    - Real-world Examples: Cards with icons (HTML/CSS). NO SVG.
+    - IoT Architecture Layers: Stacked diagram (HTML/CSS). NO SVG, NO Mermaid JS.
+    - Key Components: Callout boxes with icons (HTML/CSS). NO SVG.
+    - IoT Protocols (Illustrative Data Rate Comparison): Bar Chart -> Goal: Compare Categories -> Justification: Visualizes relative speeds/bandwidths. Method: Chart.js (Canvas). NO SVG.
+    - IoMT Early Examples: List with icons (HTML/CSS). NO SVG.
+    - IoMT Opportunities (Dentistry/MedTech): Two columns with icons (HTML/CSS). NO SVG.
+    
+    Confirmation: NEITHER Mermaid JS NOR SVG were used in this output.
+-->
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-7xl">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-[#004AAD] mb-2">Internet of Things (IoT)</h1>
+            <p class="text-lg md:text-xl text-[#0079C2] font-semibold">Module 1: Foundations & Fundamentals</p>
+        </header>
+
+        <section id="module-outcomes" class="section-card text-center">
+            <h2 class="section-heading text-3xl">Module Learning Outcomes</h2>
+            <p class="sub-heading text-lg">By the end of this module, you will be able to:</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-left px-4">
+                <div class="icon-text-pair interactive-list-item p-2 rounded-md">
+                    <span>💡</span><p class="text-gray-700">Define IoT & core concepts.</p>
+                    <div class="additional-info">IoT integrates physical objects into computer networks through sensors, software, and other technologies, allowing them to collect and exchange data. This forms a digital representation of the physical world.</div>
+                </div>
+                <div class="icon-text-pair interactive-list-item p-2 rounded-md">
+                    <span>✅</span><p class="text-gray-700">Identify key benefits & challenges.</p>
+                    <div class="additional-info">IoT offers benefits like efficiency, automation, and data-driven insights, but faces challenges such as security, privacy, scalability, interoperability, and cost.</div>
+                </div>
+                <div class="icon-text-pair interactive-list-item p-2 rounded-md">
+                    <span>🏗️</span><p class="text-gray-700">Recognize fundamental building blocks.</p>
+                    <div class="additional-info">Key blocks include sensors (input), actuators (output), connectivity (protocols), and computing platforms (cloud/edge).</div>
+                </div>
+                <div class="icon-text-pair interactive-list-item p-2 rounded-md">
+                    <span>➡️</span><p class="text-gray-700">Discuss IoT's evolution & future.</p>
+                    <div class="additional-info">IoT evolved from early M2M communication. Its future involves deeper integration with 5G, advanced AI, and edge computing for truly smart environments.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="what-is-iot" class="section-card">
+            <h2 class="section-heading">M1.1 What is IoT?</h2>
+            <p class="sub-heading">Connecting the Physical and Digital Worlds</p>
+
+            <h3 class="font-bold text-[#004AAD] text-xl mb-3">Definition, History, Evolution</h3>
+            <p class="text-gray-700 mb-6 leading-relaxed">The Internet of Things (IoT) refers to a vast and interconnected network of physical objects—or 'things'—that are embedded with sensors, software, and other technologies. These objects are designed to connect and exchange data with other devices and systems over the internet, essentially bringing the digital world into physical spaces.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mb-12">
+                <div class="interactive-box p-4 bg-[#E6F6FB] rounded-lg shadow-md border-2 border-[#89D5F1]">
+                    <p class="text-5xl">🕰️</p>
+                    <h4 class="font-bold text-[#0079C2]">1980s-90s</h4>
+                    <p class="text-xs text-gray-600">Early Embedded Systems, Ubiquitous Computing</p>
+                    <div class="additional-info">The concept began with early ideas of pervasive computing and machine-to-machine (M2M) communication, laying the groundwork for device interaction.</div>
+                </div>
+                <div class="flow-arrow-horizontal hidden md:flex"></div>
+                <div class="interactive-box p-4 bg-[#E6F6FB] rounded-lg shadow-md border-2 border-[#89D5F1]">
+                    <p class="text-5xl">🔗</p>
+                    <h4 class="font-bold text-[#0079C2]">2000s</h4>
+                    <p class="text-xs text-gray-600">M2M Communication, Pervasive Internet</p>
+                    <div class="additional-info">Increased internet access and miniaturization of technology allowed for more devices to connect, moving beyond simple M2M to networked ecosystems.</div>
+                </div>
+                <div class="flow-arrow-horizontal hidden md:flex"></div>
+                <div class="interactive-box p-4 bg-[#E6F6FB] rounded-lg shadow-md border-2 border-[#89D5F1]">
+                    <p class="text-5xl">🧠</p>
+                    <h4 class="font-bold text-[#0079C2]">Present & Future</h4>
+                    <p class="text-xs text-gray-600">AI, Edge Computing, 5G, Smart Environments</p>
+                    <div class="additional-info">Breakthroughs in AI, edge computing, and 5G networks are propelling IoT towards intelligent, self-optimizing, and deeply integrated smart environments.</div>
+                </div>
+                 <div class="md:hidden w-full flex justify-center"> <div class="flow-arrow-vertical"></div> </div>
+                 <div class="md:hidden w-full flex justify-center"> <div class="flow-arrow-vertical"></div> </div>
+            </div>
+
+            <h3 class="font-bold text-[#004AAD] text-xl mb-3">Sensors & Actuators: The Senses and Actions</h3>
+            <p class="text-gray-700 mb-6 leading-relaxed">Sensors are the 'eyes and ears' (input), detecting environmental data. Actuators are the 'hands and feet' (output), performing actions based on commands.</p>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-12">
+                <div class="interactive-box p-4 bg-[#E6F6FB] rounded-lg shadow-md border-2 border-[#89D5F1]">
+                    <p class="text-4xl mb-2">👁️👂</p>
+                    <h4 class="font-bold text-[#00A9E0]">Sensors</h4>
+                    <p class="text-xs text-gray-600">Collect Data (Temp, Motion, Biometric)</p>
+                    <div class="additional-info">Sensors convert real-world phenomena (e.g., heat, light, pressure) into measurable electrical signals, which can be analog (continuous) or digital (discrete).</div>
+                </div>
+                <div class="flow-arrow-horizontal"></div>
+                <div class="interactive-box p-4 bg-[#E6F6FB] rounded-lg shadow-md border-2 border-[#89D5F1]">
+                    <p class="text-4xl mb-2">🧠</p>
+                    <h4 class="font-bold text-[#00A9E0]">IoT Device / Controller</h4>
+                    <p class="text-xs text-gray-600">Process Data</p>
+                    <div class="additional-info">This refers to the embedded computing unit, like a microcontroller, that processes sensor data and sends commands to actuators.</div>
+                </div>
+                <div class="flow-arrow-horizontal"></div>
+                <div class="interactive-box p-4 bg-[#E6F6FB] rounded-lg shadow-md border-2 border-[#89D5F1]">
+                    <p class="text-4xl mb-2">✋🦶</p>
+                    <h4 class="font-bold text-[#00A9E0]">Actuators</h4>
+                    <p class="text-xs text-gray-600">Perform Actions (Lights, Motors)</p>
+                    <div class="additional-info">Actuators receive electrical signals and convert them into physical actions, such as turning lights on/off, adjusting motor speeds, or dispensing medication.</div>
+                </div>
+            </div>
+
+            <h3 class="font-bold text-[#004AAD] text-xl mb-3">Connectivity & Data</h3>
+            <p class="text-gray-700 mb-6 leading-relaxed">Connectivity forms the indispensable backbone, facilitating seamless exchange of information. This data, generated in immense and continuous streams, fuels all IoT applications, enabling analytics and automation.</p>
+            <div class="flex justify-around items-center mb-12">
+                <div class="text-center interactive-box p-4 bg-[#E6F6FB] rounded-lg shadow-md border-2 border-[#89D5F1]">
+                    <p class="text-6xl text-[#00A9E0]">🌐</p>
+                    <p class="font-semibold text-[#004AAD] text-lg">Connectivity</p>
+                    <p class="text-sm text-gray-600">(Wi-Fi, BLE, LPWAN, Cellular)</p>
+                    <div class="additional-info">Diverse protocols like Wi-Fi (high bandwidth, local), Bluetooth Low Energy (short-range, low-power), LoRaWAN (long-range, very low-power), and cellular (wide coverage, higher bandwidth) enable communication.</div>
+                </div>
+                <div class="text-center interactive-box p-4 bg-[#E6F6FB] rounded-lg shadow-md border-2 border-[#89D5F1]">
+                    <p class="text-6xl text-[#00A9E0]">📈</p>
+                    <p class="font-semibold text-[#004AAD] text-lg">Vast Data Streams</p>
+                    <p class="text-sm text-gray-600">(Readings, Video, Health Metrics)</p>
+                    <div class="additional-info">IoT devices generate continuous, diverse data streams, from simple sensor readings to complex multimedia feeds, fueling insights and automation.</div>
+                </div>
+            </div>
+
+            <h3 class="font-bold text-[#004AAD] text-xl mb-3">Cloud/Edge Computing: Where Data Gets Processed</h3>
+            <p class="text-gray-700 mb-6 leading-relaxed">Strategic placement of computing power is critical for IoT. Data is processed either centrally in the cloud or closer to the source at the edge.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-4">
+                <div class="interactive-box p-6 bg-[#E6F6FB] rounded-lg shadow-md border-2 border-[#89D5F1]">
+                    <p class="text-5xl mb-2">☁️</p>
+                    <h4 class="font-bold text-[#00A9E0]">Cloud Computing</h4>
+                    <p class="text-sm text-gray-700">Centralized processing, scalable storage, complex analytics. Ideal for large-scale data and remote management.</p>
+                    <div class="additional-info">Offers virtually limitless processing power and storage for managing billions of devices and running sophisticated applications.</div>
+                </div>
+                <div class="interactive-box p-6 bg-[#E6F6FB] rounded-lg shadow-md border-2 border-[#89D5F1]">
+                    <p class="text-5xl mb-2">📍</p>
+                    <h4 class="font-bold text-[#00A9E0]">Edge Computing</h4>
+                    <p class="text-sm text-gray-700">Decentralized processing closer to data source. Reduces latency, saves bandwidth, enhances privacy. Critical for real-time applications.</p>
+                    <div class="additional-info">Processes data on the device or a local gateway, reducing latency for real-time applications and conserving network bandwidth.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="why-iot-matters" class="section-card">
+            <h2 class="section-heading">M1.2 Why IoT Matters: Benefits & Challenges</h2>
+            <p class="sub-heading">The Dual Sides of Transformation</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="font-bold text-[#004AAD] text-xl mb-3">Key Benefits of IoT</h3>
+                    <ul class="list-none space-y-3">
+                        <li class="flex items-start bg-blue-50 p-3 rounded-md interactive-list-item">
+                            <span class="text-2xl mr-3 text-[#0079C2]">⚡</span>
+                            <div>
+                                <h4 class="font-semibold text-[#004AAD]">Efficiency & Automation</h4>
+                                <p class="text-sm text-gray-700">Intelligent automation, predictive maintenance, reduced manual intervention.</p>
+                                <div class="additional-info">IoT enables real-time equipment monitoring, predicting failures and scheduling proactive maintenance, minimizing downtime and costs.</div>
+                            </div>
+                        </li>
+                        <li class="flex items-start bg-blue-50 p-3 rounded-md interactive-list-item">
+                            <span class="text-2xl mr-3 text-[#0079C2]">🧠</span>
+                            <div>
+                                <h4 class="font-semibold text-[#004AAD]">Data-Driven Insights</h4>
+                                <p class="text-sm text-gray-700">Unprecedented access to real-time, granular data for informed decisions.</p>
+                                <div class="additional-info">Continuous data streams allow organizations to identify trends, optimize processes, and make evidence-based decisions.</div>
+                            </div>
+                        </li>
+                        <li class="flex items-start bg-blue-50 p-3 rounded-md interactive-list-item">
+                            <span class="text-2xl mr-3 text-[#0079C2]">✨</span>
+                            <div>
+                                <h4 class="font-semibold text-[#004AAD]">New Services & Innovation</h4>
+                                <p class="text-sm text-gray-700">Enables creation of novel business models and improved quality of life.</p>
+                                <div class="additional-info">IoT fosters innovation, transforming traditional industries and improving life through smart homes, safer public spaces, and personalized healthcare.</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-[#004AAD] text-xl mb-3">Major Challenges in IoT Adoption</h3>
+                    <p class="text-gray-700 mb-4 text-center">Addressing these is critical for successful and ethical deployment.</p>
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="challengesChart"></canvas>
+                    </div>
+                    <ul class="list-none space-y-3 mt-4">
+                        <li class="flex items-start bg-red-50 p-3 rounded-md interactive-list-item">
+                            <span class="text-2xl mr-3 text-red-700">⚠️</span>
+                            <div>
+                                <h4 class="font-semibold text-[#004AAD]">Security & Privacy Risks</h4>
+                                <p class="text-sm text-gray-700">Each device is a potential entry point; vast sensitive data collected.</p>
+                                <div class="additional-info">Vulnerabilities in devices or networks can lead to data breaches, system compromises, and even physical harm, especially in healthcare.</div>
+                            </div>
+                        </li>
+                        <li class="flex items-start bg-yellow-50 p-3 rounded-md interactive-list-item">
+                            <span class="text-2xl mr-3 text-yellow-700">🚧</span>
+                            <div>
+                                <h4 class="font-semibold text-[#004AAD]">Scalability & Interoperability</h4>
+                                <p class="text-sm text-gray-700">Managing billions of devices; diverse standards hinder integration.</p>
+                                <div class="additional-info">Scaling requires robust infrastructure, while proprietary standards and data formats create integration difficulties between different systems.</div>
+                            </div>
+                        </li>
+                        <li class="flex items-start bg-orange-50 p-3 rounded-md interactive-list-item">
+                            <span class="text-2xl mr-3 text-orange-700">💸</span>
+                            <div>
+                                <h4 class="font-semibold text-[#004AAD]">Cost of Deployment</h4>
+                                <p class="text-sm text-gray-700">Substantial investment in hardware, software, connectivity, and management.</p>
+                                <div class="additional-info">The financial outlay for implementing and maintaining large-scale IoT solutions can be a significant barrier for many organizations.</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 class="font-bold text-[#004AAD] text-xl mt-12 mb-3 text-center">Real-world IoT Applications</h3>
+            <p class="text-gray-700 mb-6 leading-relaxed text-center">IoT is transforming various aspects of our lives and industries, bringing smart solutions to daily challenges.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="interactive-box p-5 bg-[#E6F6FB] rounded-lg shadow-sm border border-[#89D5F1]">
+                    <p class="text-5xl mb-3 text-[#00A9E0]">🏠</p>
+                    <h4 class="font-bold text-[#004AAD] text-lg mb-2">Smart Homes</h4>
+                    <p class="text-sm text-gray-700">Intelligent thermostats, smart lighting, connected security cameras for comfort & safety.</p>
+                    <div class="additional-info">Examples include smart locks, automated blinds, and voice-controlled assistants that integrate various home devices for enhanced convenience and security.</div>
+                </div>
+                <div class="interactive-box p-5 bg-[#E6F6FB] rounded-lg shadow-sm border border-[#89D5F1]">
+                    <p class="text-5xl mb-3 text-[#00A9E0]">🏙️</p>
+                    <h4 class="font-bold text-[#004AAD] text-lg mb-2">Smart Cities</h4>
+                    <p class="text-sm text-gray-700">Optimized traffic, smart waste management, environmental quality monitoring.</p>
+                    <div class="additional-info">Includes smart parking systems, public safety monitoring, and integrated public transport solutions to improve urban living efficiency.</div>
+                </div>
+                <div class="interactive-box p-5 bg-[#E6F6FB] rounded-lg shadow-sm border border-[#89D5F1]">
+                    <p class="text-5xl mb-3 text-[#00A9E0]">🏭</p>
+                    <h4 class="font-bold text-[#004AAD] text-lg mb-2">Industrial IoT (IIoT)</h4>
+                    <p class="text-sm text-gray-700">Predictive maintenance, supply chain optimization, asset tracking in manufacturing.</p>
+                    <div class="additional-info">IIoT applies to manufacturing and industrial processes, using sensors on machinery to optimize operations, improve safety, and enhance quality control.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="iot-architecture" class="section-card">
+            <h2 class="section-heading">M1.3 IoT Ecosystem and Architecture</h2>
+            <p class="sub-heading">Understanding the Layers and Components</p>
+
+            <h3 class="font-bold text-[#004AAD] text-xl mb-3 text-center">Layers of IoT Architecture</h3>
+            <p class="text-gray-700 mb-6 leading-relaxed text-center">IoT systems are visualized in a layered model, from physical interaction to business strategy.</p>
+            <div class="flex flex-col items-center max-w-sm mx-auto mb-12">
+                <div class="layer-box w-full interactive-box">
+                    <div class="layer-icon text-[#004AAD]">📈</div>
+                    <h4 class="font-bold text-[#004AAD]">Business Layer</h4>
+                    <p class="text-xs text-gray-700">Defines strategies, models, and monetization.</p>
+                    <div class="additional-info">This top layer focuses on the overall business value, managing user access, data monetization, and setting the strategic direction for the IoT solution.</div>
+                </div>
+                <div class="flow-arrow-vertical"></div>
+                <div class="layer-box w-full interactive-box">
+                    <div class="layer-icon text-[#0079C2]">💻</div>
+                    <h4 class="font-bold text-[#004AAD]">Application Layer</h4>
+                    <p class="text-xs text-gray-700">Processes data for specific services & UIs (Smart Home, Healthcare).</p>
+                    <div class="additional-info">This layer includes the user-facing applications and services that convert raw data into meaningful insights and actionable commands.</div>
+                </div>
+                <div class="flow-arrow-vertical"></div>
+                <div class="layer-box w-full interactive-box">
+                    <div class="layer-icon text-[#00A9E0]">📡</div>
+                    <h4 class="font-bold text-[#004AAD]">Network Layer</h4>
+                    <p class="text-xs text-gray-700">Transmits data using various communication technologies.</p>
+                    <div class="additional-info">Handles secure and efficient data transfer between devices, gateways, and the cloud, using various wired and wireless protocols.</div>
+                </div>
+                <div class="flow-arrow-vertical"></div>
+                <div class="layer-box w-full interactive-box">
+                    <div class="layer-icon text-[#89D5F1]">⚙️</div>
+                    <h4 class="font-bold text-[#004AAD]">Perception Layer</h4>
+                    <p class="text-xs text-gray-700">Physical devices, sensors, and actuators gathering data.</p>
+                    <div class="additional-info">This foundational layer includes all the physical 'things' that directly interact with the environment to gather information or perform actions.</div>
+                </div>
+            </div>
+
+            <h3 class="font-bold text-[#004AAD] text-xl mb-3 text-center">Key Components of an IoT Ecosystem</h3>
+            <p class="text-gray-700 mb-6 leading-relaxed text-center">Seamless interaction of these components ensures robust IoT functionality.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="interactive-box p-4 bg-[#E6F6FB] rounded-lg shadow-sm border border-[#89D5F1]">
+                    <p class="text-4xl mb-2 text-[#00A9E0]">🔌</p>
+                    <h4 class="font-bold text-[#004AAD]">Things / Devices</h4>
+                    <p class="text-xs text-gray-700">Physical objects with sensors/actuators.</p>
+                    <div class="additional-info">The core physical units of IoT, ranging from simple sensors to complex robotic systems, designed to interact with the environment.</div>
+                </div>
+                <div class="interactive-box p-4 bg-[#E6F6FB] rounded-lg shadow-sm border border-[#89D5F1]">
+                    <p class="text-4xl mb-2 text-[#00A9E0]">🌉</p>
+                    <h4 class="font-bold text-[#004AAD]">IoT Gateways</h4>
+                    <p class="text-xs text-gray-700">Aggregates, translates, processes data at the edge.</p>
+                    <div class="additional-info">Gateways bridge the gap between devices and the cloud, performing data aggregation, protocol translation, and preliminary processing.</div>
+                </div>
+                <div class="interactive-box p-4 bg-[#E6F6FB] rounded-lg shadow-sm border border-[#89D5F1]">
+                    <p class="text-4xl mb-2 text-[#00A9E0]">☁️</p>
+                    <h4 class="font-bold text-[#004AAD]">Cloud Platforms</h4>
+                    <p class="text-xs text-gray-700">Scalable storage, processing, application hosting.</p>
+                    <div class="additional-info">Cloud platforms provide the backend infrastructure for massive data storage, advanced analytics, and remote management of IoT devices.</div>
+                </div>
+                <div class="interactive-box p-4 bg-[#E6F6FB] rounded-lg shadow-sm border border-[#89D5F1]">
+                    <p class="text-4xl mb-2 text-[#00A9E0]">🔍</p>
+                    <h4 class="font-bold text-[#004AAD]">Analytics Tools</h4>
+                    <p class="text-xs text-gray-700">Extract insights, identify patterns, make predictions.</p>
+                    <div class="additional-info">These tools use AI and machine learning to transform raw IoT data into actionable intelligence, enabling smarter decision-making.</div>
+                </div>
+            </div>
+
+            <h3 class="font-bold text-[#004AAD] text-xl mb-3 text-center">Introduction to IoT Protocols: The Language of Connectivity</h3>
+            <p class="text-gray-700 mb-6 leading-relaxed text-center">Protocols optimize connectivity based on range, bandwidth, and power consumption.</p>
+            <div class="chart-container h-64 md:h-80">
+                <canvas id="protocolsChart"></canvas>
+            </div>
+        </section>
+
+        <section id="iot-in-healthcare" class="section-card">
+            <h2 class="section-heading">M1.4 Introduction to IoT in Healthcare (IoMT)</h2>
+            <p class="sub-heading">Transforming Patient Care</p>
+
+            <h3 class="font-bold text-[#004AAD] text-xl mb-3">Definition and Scope of IoMT</h3>
+            <p class="text-gray-700 mb-6 leading-relaxed text-center">IoMT is a specialized subset of IoT dedicated to healthcare. It's an interconnected ecosystem of medical devices, IT systems, and software to collect, analyze, and securely transmit health data.</p>
+            <div class="text-center mb-12 interactive-box p-6 bg-[#E6F6FB] rounded-lg shadow-sm border border-[#89D5F1]">
+                <p class="text-6xl text-[#00A9E0]">❤️‍🩹</p>
+                <h4 class="font-bold text-[#004AAD] text-xl mt-3">Internet of Medical Things</h4>
+                <p class="text-sm text-gray-600">(Remote monitoring, chronic disease management, smart hospitals)</p>
+                <div class="additional-info">IoMT aims to improve healthcare outcomes, enhance operational efficiency, and make care more accessible and personalized through connected devices.</div>
+            </div>
+
+            <h3 class="font-bold text-[#004AAD] text-xl mb-3">Early Examples of IoMT Devices</h3>
+            <ul class="list-none space-y-3 mb-12">
+                <li class="flex items-start bg-blue-50 p-3 rounded-md interactive-list-item">
+                    <span class="text-2xl mr-3 text-[#0079C2]">⌚</span>
+                    <div>
+                        <h4 class="font-semibold text-[#004AAD]">Wearable Fitness Trackers</h4>
+                        <p class="text-sm text-gray-700">Basic metrics like steps, distance, heart rate for personal activity monitoring.</p>
+                        <div class="additional-info">These early devices provided individuals with a snapshot of their physical activity, fostering personal health management.</div>
+                    </div>
+                </li>
+                <li class="flex items-start bg-blue-50 p-3 rounded-md interactive-list-item">
+                    <span class="text-2xl mr-3 text-[#0079C2]">🩸</span>
+                    <div>
+                        <h4 class="font-semibold text-[#004AAD]">Smart Blood Pressure Cuffs</h4>
+                        <p class="text-sm text-gray-700">Automated readings, wireless transmission to smartphones or healthcare portals.</p>
+                        <div class="additional-info">Enabled easier tracking of hypertension by wirelessly transmitting readings, allowing healthcare providers to monitor trends remotely.</div>
+                    </div>
+                </li>
+                <li class="flex items-start bg-blue-50 p-3 rounded-md interactive-list-item">
+                    <span class="text-2xl mr-3 text-[#0079C2]">🍬</span>
+                    <div>
+                        <h4 class="font-semibold text-[#004AAD]">Continuous Glucose Monitors (CGMs)</h4>
+                        <p class="text-sm text-gray-700">Real-time blood sugar readings for proactive diabetes management without frequent finger pricks.</p>
+                        <div class="additional-info">Revolutionary for diabetes management, providing constant real-time data for immediate dietary or insulin adjustments.</div>
+                    </div>
+                </li>
+            </ul>
+
+            <h3 class="font-bold text-[#004AAD] text-xl mb-3 text-center">Opportunities for IoT in Dentistry & Medical Technology</h3>
+            <p class="text-gray-700 mb-6 leading-relaxed text-center">IoT integration offers unprecedented transformation for both fields.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="interactive-box p-6 bg-[#E6F6FB] rounded-lg shadow-sm border border-[#89D5F1]">
+                    <h4 class="font-bold text-[#00A9E0] text-lg mb-3">🦷 Dentistry Innovations</h4>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 text-sm text-left">
+                        <li>Smart toothbrushes: Real-time feedback on brushing technique.</li>
+                        <li>Connected instruments: Precise procedures, remote diagnostics, predictive maintenance.</li>
+                        <li>AI-powered diagnostics: Early detection of oral diseases.</li>
+                    </ul>
+                    <div class="additional-info">IoT can revolutionize oral care by enhancing preventive care, enabling more precise procedures, and assisting in early disease detection through AI and connected tools.</div>
+                </div>
+                <div class="interactive-box p-6 bg-[#E6F6FB] rounded-lg shadow-sm border border-[#89D5F1]">
+                    <h4 class="font-bold text-[#00A9E0] text-lg mb-3">⚕️ Medical Technology Advancements</h4>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 text-sm text-left">
+                        <li>Smart lab equipment: Automated testing & reporting.</li>
+                        <li>Connected surgical tools: Enhanced precision, real-time feedback.</li>
+                        <li>Remote patient monitoring: Managing chronic conditions, post-op recovery.</li>
+                    </ul>
+                    <div class="additional-info">IoMT promises dramatic shifts in diagnosis and treatment delivery with automated lab equipment, precision surgical tools, and robust remote monitoring systems.</div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center mt-12 text-gray-600 text-sm pb-8">
+            <p>&copy; 2025 Internet of Things Course | Module 1 Overview</p>
+        </footer>
+    </div>
+
+<script>
+    function wrapLabel(str, maxwidth) {
+        const words = str.split(' ');
+        const lines = [];
+        let currentLine = words[0];
+
+        for (let i = 1; i < words.length; i++) {
+            if (currentLine.length + words[i].length + 1 < maxwidth) {
+                currentLine += ' ' + words[i];
+            } else {
+                lines.push(currentLine);
+                currentLine = words[i];
+            }
+        }
+        lines.push(currentLine);
+        return lines;
+    }
+
+    const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        return Array.isArray(label) ? label.join(' ') : label;
+    };
+    
+    const sharedChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    font: {
+                        family: "'Inter', sans-serif",
+                        size: 12
+                    }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    title: tooltipTitleCallback
+                },
+                backgroundColor: '#004AAD',
+                titleFont: {
+                    size: 14,
+                    family: "'Inter', sans-serif"
+                },
+                bodyFont: {
+                    size: 12,
+                    family: "'Inter', sans-serif"
+                },
+                padding: 10
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: { color: '#e0e0e0' },
+                ticks: { font: { family: "'Inter', sans-serif" } }
+            },
+            x: {
+                grid: { display: false },
+                ticks: { font: { family: "'Inter', sans-serif" } }
+            }
+        }
+    };
+    
+    const palette = {
+        blueDark: '#004AAD',
+        blueMid: '#0079C2',
+        blueLight: '#00A9E0',
+        bluePale: '#89D5F1',
+        blueBg: '#E6F6FB'
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // M1.2 Challenges Chart
+        const challengesCtx = document.getElementById('challengesChart').getContext('2d');
+        new Chart(challengesCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    'Security', 
+                    'Privacy', 
+                    'Scalability', 
+                    wrapLabel('Interoperability', 16), 
+                    'Cost'
+                ],
+                datasets: [{
+                    label: 'Perceived Difficulty (1-10)',
+                    data: [9, 8, 7, 7, 6], /* Illustrative Data */
+                    backgroundColor: [
+                        '#FF6384', /* Reddish for high concern */
+                        '#FF9F40', /* Orange for high concern */
+                        palette.blueLight,
+                        palette.blueMid,
+                        palette.bluePale
+                    ],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                ...sharedChartOptions,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { ...sharedChartOptions.plugins.tooltip }
+                },
+                scales: {
+                    y: { ...sharedChartOptions.scales.y, max: 10, ticks: { ...sharedChartOptions.scales.y.ticks, stepSize: 1 } },
+                    x: { ...sharedChartOptions.scales.x }
+                }
+            }
+        });
+
+        // M1.3 Protocols Chart
+        const protocolsCtx = document.getElementById('protocolsChart').getContext('2d');
+        new Chart(protocolsCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    'Wi-Fi', 
+                    wrapLabel('Bluetooth LE', 16), 
+                    'LoRaWAN', 
+                    '5G Cellular'
+                ],
+                datasets: [{
+                    label: 'Relative Data Rate (Mbps - Illustrative)',
+                    data: [50, 1, 0.05, 100], /* Illustrative Data */
+                    backgroundColor: [
+                        palette.blueDark,
+                        palette.blueMid,
+                        palette.bluePale,
+                        palette.blueLight
+                    ],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                ...sharedChartOptions,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { ...sharedChartOptions.plugins.tooltip }
+                },
+                scales: {
+                    y: { ...sharedChartOptions.scales.y, max: 120 },
+                    x: { ...sharedChartOptions.scales.x }
+                }
+            }
+        });
+
+        // Interactivity for additional info panels
+        document.querySelectorAll('.interactive-box, .interactive-list-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const infoPanel = item.querySelector('.additional-info');
+                if (infoPanel) {
+                    infoPanel.classList.toggle('show');
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
